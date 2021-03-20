@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+<style type="text/css">
+	.setting{
+		background-color: #00cf1f;
+		border: 1px solid blue;
+		margin-top:20%;
+	}
+</style>
+
+{%for message in get_flashed_messages()%}
+<div class="setting">
+<h3 align="center">{{message  }}<span><a href="/"> click</a></p></span></h3>
+
+</div>
+
+{%endfor%}
+
+</body>
+</html>
+
+
