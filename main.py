@@ -166,3 +166,26 @@ def checkout():
         return redirect('/Success')
 
     return render_template("check_out.html", shipping=shipping, form=form)
+
+
+@app.route("/Success")
+def Success():
+    return render_template("success.html")
+
+
+@app.route("/add_to_cart", methods=["POST", "GET"])
+def add_to_card():
+    if 'cart' not in session:
+        session['cart'] = []
+    if request.method == "POST":
+        product_id = request.form['id']
+        quantity = request.form['quantity']
+        name = request.form['name']
+        session['cart'].append({"id": product_id, "quantity": quantity, "name": name})
+        session.modified = True
+
+        return redirect("/")
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
