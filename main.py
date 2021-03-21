@@ -141,6 +141,13 @@ def cart():
     return render_template("cart.html", products=products, shipping=shipping)
 
 
+@app.route("/remove_cart_item/<int:index>")
+def remove_cart_item(index):
+    del session['cart'][index]
+    session.modified = True
+    return redirect("/cart")
+
+
 @app.route("/checkout", methods=["POST", "GET"])
 def checkout():
     # name , email , address , country , city , state, zip_code, quantity, size
