@@ -139,3 +139,30 @@ def product_details(id):
 def cart():
     products, shipping = cart_handling()
     return render_template("cart.html", products=products, shipping=shipping)
+
+
+@app.route("/checkout", methods=["POST", "GET"])
+def checkout():
+    # name , email , address , country , city , state, zip_code, quantity, size
+    form = CheckoutForm()
+    products, shipping = cart_handling()
+    if request.method == "POST":
+        products, shipping = cart_handling()
+        # First_name , last_name , email , m_number , address,country, city, state, zip_code
+        order = Orders(
+
+            name=form.First_name.data + " " + form.Last_name.data,
+            email=form.Email.data,
+            address=form.Address.data,
+            country=form.Country.data,
+            city=form.City.data,
+            state=form.State.data,
+            zip_code=form.Zip_code.data
+        )
+
+        db.session.add(order)
+        db.session.commit()
+        flash("Order Successfully placed pleaes wait for confirmation call")
+        return redirect('/Success')
+
+    return render_template("check_out.html", shipping=shipping, form=form)
