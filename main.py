@@ -58,3 +58,15 @@ class Orders(db.Model):
     zip_code = db.Column(db.String(255), nullable=False)
     items = db.relationship("Order_item", backref="orders", lazy=True)
 # name , email , address , country , city , state, zip_code, quantity, size
+
+
+class Order_item(db.Model):
+	id = db.Column(db.Integer , primary_key=True)
+	order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
+	product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
+	quantity = db.Column(db.Integer)
+
+
+admin.add_view(ModelView(Products, db.session))
+admin.add_view(ModelView(Order_item, db.session))
+admin.add_view(ModelView(Orders, db.session))
