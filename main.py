@@ -9,7 +9,6 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, DateField, SelectField, IntegerField, DecimalField, \
     SelectMultipleField
 
-
 basdir = os.path.abspath(os.path.dirname(__file__))
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -48,3 +47,14 @@ class Products(db.Model):
     order_items = db.relationship("Order_item", backref="products", lazy=True)
 
 
+class Orders(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    address = db.Column(db.String(5000), nullable=False)
+    country = db.Column(db.String(255), nullable=False)
+    city = db.Column(db.String(255), nullable=False)
+    state = db.Column(db.String(255), nullable=False)
+    zip_code = db.Column(db.String(255), nullable=False)
+    items = db.relationship("Order_item", backref="orders", lazy=True)
+# name , email , address , country , city , state, zip_code, quantity, size
