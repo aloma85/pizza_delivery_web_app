@@ -57,16 +57,66 @@ class Orders(db.Model):
     state = db.Column(db.String(255), nullable=False)
     zip_code = db.Column(db.String(255), nullable=False)
     items = db.relationship("Order_item", backref="orders", lazy=True)
+
+
 # name , email , address , country , city , state, zip_code, quantity, size
 
 
 class Order_item(db.Model):
-	id = db.Column(db.Integer , primary_key=True)
-	order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
-	product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
-	quantity = db.Column(db.Integer)
+    id = db.Column(db.Integer, primary_key=True)
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"))
+    product_id = db.Column(db.Integer, db.ForeignKey('products.id'))
+    quantity = db.Column(db.Integer)
 
 
 admin.add_view(ModelView(Products, db.session))
 admin.add_view(ModelView(Order_item, db.session))
 admin.add_view(ModelView(Orders, db.session))
+
+
+# First_name , last_name , email , m_number , address,country, city, state, zip_code
+class CheckoutForm(FlaskForm):
+    First_name = StringField("First_name")
+    Last_name = StringField("Last name")
+    Email = StringField("email")
+    M_number = IntegerField("Mobile number")
+    Address = StringField("address")
+    Country = SelectField("Country", choices=[("UK", "UK"), ("US", "US")])
+    City = StringField("Cit]")
+    State = StringField("State")
+    Zip_code = IntegerField("zip_code")
+
+
+# Python program to convert a list to string
+
+# Function to convert
+def listToString(s):
+    # initialize an empty string
+    str1 = ""
+
+    # traverse in the string
+    for ele in s:
+        str1 += ele
+
+    # return string
+    return str1
+
+
+def cart_handling():
+    products = []
+    grand_total = 0
+    shipping = 1
+    index = 0
+
+    for item in session['cart']:
+        product = Products.query.filter_by(id=item['id']).first()
+
+        quantity = int(item['quantity'])
+        total = quantity * int(product.price)
+        grand_total += total
+        products.append(
+            {"id": product.id, "name": product.name, "quantity": quantity, "price": product.price, "total": total,
+             "photo": product.photo, "index": index})
+        index += 1
+        shipping = grand_total + 1
+    return products, shipping
