@@ -169,7 +169,7 @@ def checkout():
 
         db.session.add(order)
         db.session.commit()
-        flash("Order Successfully placed pleaes wait for confirmation call")
+        flash("Order Successfully placed please wait for confirmation call")
         return redirect('/Success')
 
     return render_template("check_out.html", shipping=shipping, form=form)
