@@ -120,3 +120,22 @@ def cart_handling():
         index += 1
         shipping = grand_total + 1
     return products, shipping
+
+
+@app.route("/")
+def index():
+    product = Products.query.all()
+    # print(session['cart'])
+    return render_template("product_page.html", product=product)
+
+
+@app.route("/product_details/<int:id>", methods=["POST", "GET"])
+def product_details(id):
+    product = Products.query.get(id)
+    return render_template("product_details.html", product=product)
+
+
+@app.route("/cart", methods=["POST", "GET"])
+def cart():
+    products, shipping = cart_handling()
+    return render_template("cart.html", products=products, shipping=shipping)
